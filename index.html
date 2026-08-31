@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Подключ.рф — строительство каркасных домов под ключ в Набережных Челнах и Республике Татарстан.">
+    <title>Подключ.рф — каркасные дома под ключ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --ink: #171916;
+            --muted: #687067;
+            --paper: #f4f2ec;
+            --paper-2: #ebe9e1;
+            --line: rgba(23,25,22,.12);
+            --accent: #c7f36a;
+            --accent-dark: #7cae25;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            color: var(--ink);
+            background: transparent;
+            overflow-x: hidden;
+        }
+        ::selection { background: var(--accent); color: var(--ink); }
+
+        .display { font-family: 'Space Grotesk', sans-serif; }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            line-height: 1;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .eyebrow::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 5px rgba(199,243,106,.13);
+        }
+        .glass-wrapper {
+            background: rgba(17,20,17,.68);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 36px;
+            padding: 40px;
+            color: white;
+        }
+        .glass-dark {
+            background: rgba(17,20,17,.68);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .glass-light {
+            background: rgba(250,249,244,.86);
+            border: 1px solid rgba(255,255,255,.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 54px;
+            padding: 0 22px;
+            border-radius: 999px;
+            font-weight: 800;
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--ink);
+            box-shadow: 0 14px 36px rgba(130,167,46,.25);
+        }
+        .btn-primary:hover { box-shadow: 0 18px 44px rgba(130,167,46,.34); }
+        .btn-dark {
+            background: var(--ink);
+            color: white;
+        }
+        .btn-dark:hover { background: #252923; }
+        .section {
+            padding: 110px 24px;
+        }
+        .container {
+            width: min(1180px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: rgba(255,255,255,.52);
+        }
+        .dark-section {
+            background: transparent;
+            color: #f7f7f2;
+        }
+        .dark-line { border-color: rgba(255,255,255,.1); }
+
+        /* Scroll-animation hero */
+        #main-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #hero-lightpass {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+        }
+        .hero-shade {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(6,8,7,.50) 0%, rgba(6,8,7,.16) 42%, rgba(6,8,7,.42) 100%);
+        }
+        .hero-noise {
+            position: fixed;
+            inset: 0;
+            z-index: -9;
+            pointer-events: none;
+            opacity: .07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+        }
+        .hero-step {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 24px;
+        }
+        .hero-step-inner { width: min(1180px, 100%); margin: 0 auto; }
+        .hero-panel {
+            max-width: 760px;
+            padding: 34px 36px 36px;
+            border-radius: 30px;
+            color: white;
+        }
+        .hero-title {
+            margin: 18px 0 20px;
+            font-size: clamp(42px, 6vw, 82px);
+            line-height: .98;
+            letter-spacing: -.055em;
+            font-weight: 700;
+        }
+        .hero-title em {
+            color: var(--accent);
+            font-style: normal;
+        }
+        .hero-sub {
+            max-width: 650px;
+            margin: 0;
+            color: rgba(255,255,255,.78);
+            font-size: clamp(16px, 1.7vw, 21px);
+            line-height: 1.55;
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+        .meta-pill {
+            border: 1px solid rgba(255,255,255,.2);
+            background: rgba(255,255,255,.08);
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255,255,255,.86);
+        }
+        .hero-side {
+            width: min(360px, 100%);
+            padding: 24px;
+            border-radius: 24px;
+        }
+        .hero-side h3 { margin: 0 0 8px; font-size: 22px; }
+        .hero-side p { margin: 0; color: rgba(20,22,19,.65); line-height: 1.55; font-size: 14px; }
+        .hero-side .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            line-height: 1;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .step2 { justify-content: flex-start; }
+        .step3 { justify-content: flex-end; }
+        .step4 { min-height: 100vh; flex-direction: column; justify-content: center; }
+
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,.75);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+        .scroll-cue span {
+            display: block;
+            width: 1px;
+            height: 42px;
+            margin: 10px auto 0;
+            background: linear-gradient(transparent, rgba(255,255,255,.8));
+        }
+
+        /* Content */
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .stat {
+            padding: 34px 24px;
+            background: rgba(17,20,17,.68);
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 24px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        
+        .stat b {
+            display: block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            letter-spacing: -.05em;
+            color: white;
+        }
+        .stat span { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.4; }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 18px;
+        }
+        .project {
+            position: relative;
+            min-height: 520px;
+            overflow: hidden;
+            border-radius: 30px;
+            background: #252923;
+            color: white;
+            isolation: isolate;
+        }
+        .project:nth-child(1) { grid-column: span 7; }
+        .project:nth-child(2) { grid-column: span 5; }
+        .project:nth-child(3) { grid-column: span 5; min-height: 420px; }
+        .project:nth-child(4) { grid-column: span 7; min-height: 420px; }
+        .project img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .7s cubic-bezier(.2,.7,.2,1);
+            z-index: -2;
+        }
+        .project:hover img { transform: scale(1.055); }
+        .project::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(180deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.76) 100%);
+        }
+        .project-info { position: absolute; left: 26px; right: 26px; bottom: 24px; }
+        .project-tag {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.14);
+            backdrop-filter: blur(8px);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+        .project h3 {
+            margin: 0 0 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 34px;
+            letter-spacing: -.045em;
+        }
+        .project p { margin: 0; max-width: 520px; color: rgba(255,255,255,.76); line-height: 1.5; }
+
+        .process {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,.11);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 28px;
+            overflow: hidden;
+        }
+        .process-item {
+            min-height: 260px;
+            padding: 30px;
+            background: transparent;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .process-num {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .process-item h3 { margin: 55px 0 10px; font-size: 21px; color: white; }
+        .process-item p { margin: 0; color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.55; }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+        .material-visual {
+            min-height: 560px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(199,243,106,.15), transparent 55%),
+                url("./frame/frame_0049.png") center/cover;
+        }
+        .material-badge {
+            position: absolute;
+            left: 22px;
+            bottom: 22px;
+            max-width: 300px;
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+            background: rgba(15,17,14,.72);
+            border: 1px solid rgba(255,255,255,.16);
+            backdrop-filter: blur(14px);
+        }
+        .material-badge strong { display: block; font-size: 22px; margin-bottom: 6px; }
+        .material-badge span { color: rgba(255,255,255,.68); font-size: 13px; line-height: 1.45; }
+
+        .feature-list { display: grid; gap: 12px; margin-top: 28px; }
+        .feature {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 14px;
+            padding: 17px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .feature:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #e5f4c8;
+            font-weight: 800;
+        }
+        .feature b { display: block; margin-bottom: 4px; color: white; }
+        .feature span { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.45; }
+
+        .faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; }
+        details {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 22px 0;
+        }
+        details:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        summary {
+            cursor: pointer;
+            list-style: none;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: white;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: "+"; font-size: 24px; font-weight: 400; }
+        details[open] summary::after { content: "−"; }
+        details p { color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 720px; margin: 14px 0 0; }
+
+        .cta {
+            border-radius: 34px;
+            padding: 58px;
+            background:
+                radial-gradient(circle at 85% 15%, rgba(199,243,106,.22), transparent 28%),
+                #171916;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+        .cta::before {
+            content: "ПОДКЛЮЧ";
+            position: absolute;
+            right: -20px;
+            bottom: -60px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(110px, 18vw, 240px);
+            line-height: 1;
+            font-weight: 700;
+            color: rgba(255,255,255,.035);
+            pointer-events: none;
+        }
+        .cta-content { position: relative; z-index: 1; max-width: 720px; }
+        .cta h2 {
+            margin: 14px 0 18px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 5vw, 70px);
+            line-height: .98;
+            letter-spacing: -.055em;
+        }
+        .cta p { color: rgba(255,255,255,.66); max-width: 600px; line-height: 1.6; }
+
+        footer { background: rgba(17,20,17,.68); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: white; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr .8fr .8fr;
+            gap: 50px;
+            
+        }
+        .footer-logo { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -.05em; }
+        .footer-logo span { color: var(--accent); }
+        .footer-muted { color: #8d9489; font-size: 13px; line-height: 1.6; }
+        .footer-title { font-size: 13px; color: #ffffff; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: #777d74; font-weight: 800; margin-bottom: 15px; }
+        .footer-link { color: #e7e9e4; text-decoration: none; font-weight: 700; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 22px 0 30px;
+            color: #686e65;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .floating-wa {
+            position: fixed;
+            right: 20px;
+            bottom: 74px;
+            z-index: 50;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 40px rgba(0,0,0,.2);
+            transition: transform .25s ease;
+        }
+        .floating-wa:hover { transform: translateY(-2px); }
+        .floating-wa svg { width: 24px; height: 24px; fill: white; }
+        .floating-contact {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 50;
+            padding: 12px 15px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: var(--ink);
+            box-shadow: 0 14px 40px rgba(0,0,0,.2);
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .section { padding: 78px 20px; }
+            .container { width: min(100%, calc(100% - 32px)); }
+            .hero-panel { padding: 26px; }
+            .stat-strip { grid-template-columns: repeat(2, 1fr); }
+            .stat:nth-child(2) { border-right: 0; }
+            .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+            .project-grid { grid-template-columns: 1fr; }
+            .project, .project:nth-child(n) { grid-column: auto; min-height: 430px; }
+            .process { grid-template-columns: repeat(2, 1fr); }
+            .split, .faq-grid { grid-template-columns: 1fr; gap: 38px; }
+            .material-visual { min-height: 420px; }
+            
+        }
+        @media (max-width: 640px) {
+            .cta::before { display: none; }
+            .hero-step { padding: 16px; }
+            .hero-panel { padding: 22px; border-radius: 22px; }
+            .hero-title { font-size: clamp(39px, 12vw, 58px); }
+            
+            .stat-strip { grid-template-columns: 1fr 1fr; }
+            .stat { padding: 24px 16px; }
+            .stat b { font-size: 34px; }
+            .project h3 { font-size: 29px; }
+            .process { grid-template-columns: 1fr; }
+            .process-item { min-height: 205px; }
+            .process-item h3 { margin-top: 36px; }
+            
+            .footer-bottom { flex-direction: column; padding-bottom: 100px; }
+            .floating-wa {
+                position: fixed;
+                right: 14px;
+                bottom: 64px;
+                z-index: 50;
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: #25D366;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 14px 40px rgba(0,0,0,.2);
+                transition: transform .25s ease;
+            }
+            .floating-wa:hover { transform: translateY(-2px); }
+            .floating-wa svg { width: 24px; height: 24px; fill: white; }
+            .floating-contact { right: 14px; bottom: 14px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- =========================================================
+         HERO: здесь сохранена исходная scroll-driven анимация дома.
+         Кадры по-прежнему берутся из ./frame/
+         ========================================================= -->
+    <canvas id="hero-lightpass"></canvas>
+    <div class="hero-shade"></div>
+    <div class="hero-noise"></div>
+
+    <main id="main-container">
+        <section id="step1" class="hero-step">
+            <div class="hero-step-inner">
+                <div class="hero-panel glass-dark">
+                    <div class="eyebrow">Подключ.рф · Набережные Челны</div>
+                    <h1 class="hero-title display">
+                        Дом начинается<br>
+                        <em>с правильного каркаса.</em>
+                    </h1>
+                    <p class="hero-sub">
+                        Строим современные каркасные дома под ключ —
+                        от проекта и подготовки участка до готового дома.
+                    </p>
+                    <div class="hero-meta">
+                        <span class="meta-pill">20–35 дней на сборку</span>
+                        <span class="meta-pill">Гарантия 5 лет*</span>
+                        <span class="meta-pill">Сухая строганая доска</span>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-cue">Листайте вниз<span></span></div>
+        </section>
+
+        <section id="step2" class="hero-step step2">
+            <div class="hero-step-inner flex justify-start">
+                <div class="hero-side glass-light">
+                    <div class="number">01</div>
+                    <h3 class="display">Сначала — каркас</h3>
+                    <p>
+                        Вы видите, как дом появляется буквально на глазах:
+                        от основания и силового каркаса до готового фасада.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="step3" class="hero-step step3">
+            <div class="hero-step-inner flex justify-end">
+                <div class="hero-side glass-light">
+                    <div class="number">02</div>
+                    <h3 class="display">Собираем без лишней суеты</h3>
+                    <p>
+                        Работаем по понятному процессу, фиксируем договорённости
+                        и держим заказчика в курсе строительства.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="step4" class="hero-step step4">
+            <div class="hero-panel glass-dark text-center">
+                <div class="eyebrow justify-center">Финальный результат</div>
+                <h2 class="hero-title display" style="font-size:clamp(40px,5vw,68px);">
+                    Анимация заканчивается.<br><em>Строительство — нет.</em>
+                </h2>
+                <p class="hero-sub mx-auto">
+                    Покажем, из чего складывается стоимость вашего дома,
+                    какие решения подойдут участку и сколько займёт реализация.
+                </p>
+                <div class="mt-8 flex flex-wrap justify-center gap-3">
+                    <a class="btn btn-primary" href="#contact">Рассчитать стоимость →</a>
+                    <a class="btn" style="border:1px solid rgba(255,255,255,.2);color:white;" href="#projects">Посмотреть проекты</a>
+                </div>
+            </div>
+        </section>
+
+        <div style="height:8vh"></div>
+    </main>
+
+    <!-- После scroll-анимации начинается обычный сайт -->
+    <div class="relative z-10">
+        <section class="section" style="padding-top:62px;padding-bottom:62px;">
+            <div class="container">
+                <div class="stat-strip">
+                    <div class="stat"><b>20–35</b><span>дней — ориентир по сборке дома*</span></div>
+                    <div class="stat"><b>5 лет</b><span>официальной гарантии*</span></div>
+                    <div class="stat"><b>48+</b><span>реализованных объектов*</span></div>
+                    <div class="stat"><b>1</b><span>команда — от расчёта до ключей</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section" style="padding-top:70px;">
+            <div class="container">
+                <div class="glass-wrapper mb-12">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+                        <div>
+                            <div class="eyebrow" style="color: white;">Проекты</div>
+                            <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mt-5 mb-4 text-white">Дома, в которых<br>хочется остаться.</h2>
+                        </div>
+                        <p class="max-w-md text-gray-300 leading-relaxed">
+                            Не ограничиваемся одним шаблоном. Подбираем архитектуру,
+                            площадь и планировку под участок, бюджет и сценарий жизни.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="project-grid">
+                    <article class="project">
+                        <img src="./frame/frame_0015.png" alt="Современный деревянный дом" loading="lazy">
+                        <div class="project-info">
+                            <span class="project-tag">Барнхаус</span>
+                            <h3>Тёплый минимализм</h3>
+                            <p>Лаконичная архитектура, панорамное остекление и много естественного света.</p>
+                        </div>
+                    </article>
+                    <article class="project">
+                        <img src="./frame/frame_0025.png" alt="Дом A-Frame" loading="lazy">
+                        <div class="project-info">
+                            <span class="project-tag">A-Frame</span>
+                            <h3>Компактный формат</h3>
+                            <p>Для дачи, загородного отдыха или небольшой семьи.</p>
+                        </div>
+                    </article>
+                    <article class="project">
+                        <img src="./frame/frame_0035.png" alt="Современный семейный дом" loading="lazy">
+                        <div class="project-info">
+                            <span class="project-tag">Семейный</span>
+                            <h3>Больше пространства</h3>
+                            <p>Продуманная планировка для постоянного проживания.</p>
+                        </div>
+                    </article>
+                    <article class="project">
+                        <img src="./frame/frame_0045.png" alt="Загородный дом" loading="lazy">
+                        <div class="project-info">
+                            <span class="project-tag">Индивидуальный</span>
+                            <h3>Дом под ваш сценарий</h3>
+                            <p>Меняем площадь, планировку, фасад и комплектацию — а не вашу мечту под шаблон.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section dark-section">
+            <div class="container">
+                <div class="glass-wrapper mb-12">
+                    <div class="eyebrow" style="color: white;">Как всё происходит</div>
+                    <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mt-5 text-white">Понятно от первого<br>звонка до ключей.</h2>
+                </div>
+
+                <div class="process">
+                    <div class="process-item">
+                        <div class="process-num">01 / ЗАПРОС</div>
+                        <h3>Обсуждаем задачу</h3>
+                        <p>Площадь, участок, пожелания, бюджет и сроки. Без сложных терминов.</p>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-num">02 / ПРОЕКТ</div>
+                        <h3>Считаем комплектацию</h3>
+                        <p>Подбираем решение и фиксируем основные параметры будущего дома.</p>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-num">03 / СТРОЙКА</div>
+                        <h3>Возводим дом</h3>
+                        <p>Каркас, кровля, контур, фасад и остальные работы — по согласованному плану.</p>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-num">04 / РЕЗУЛЬТАТ</div>
+                        <h3>Передаём объект</h3>
+                        <p>Принимаете работу и получаете дом в согласованной комплектации.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container glass-wrapper split" style="padding: 40px;">
+                <div class="material-visual">
+                    <div class="material-badge">
+                        <strong>Дерево — основа.</strong>
+                        <span>Сухая строганая доска камерной сушки — один из ключевых материалов, заявленных в текущем проекте.</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="eyebrow" style="color: white;">Материалы и контроль</div>
+                    <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mt-5 mb-6 text-white">Когда качество<br>видно в деталях.</h2>
+                    <p class="text-gray-300 text-lg leading-relaxed">
+                        Хороший каркас начинается не с красивого фасада, а с того,
+                        что остаётся внутри стен. Поэтому отдельно рассказываем
+                        о древесине, защите и точности сборки.
+                    </p>
+
+                    <div class="feature-list">
+                        <div class="feature">
+                            <div class="feature-icon">01</div>
+                            <div><b>Сухая строганая доска</b><span>Камерная сушка и контроль материала — по заявленной технологии.</span></div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">02</div>
+                            <div><b>Контроль геометрии</b><span>Точность элементов напрямую влияет на качество сборки каркаса.</span></div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">03</div>
+                            <div><b>Огнебиозащита</b><span>Обработка древесины предусмотрена в текущей комплектации.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="padding-top:45px;">
+            <div class="container glass-wrapper" style="padding: 40px;">
+                <div class="faq-grid">
+                    <div>
+                        <div class="eyebrow" style="color: white;">Вопросы</div>
+                        <h2 class="display text-5xl font-bold tracking-tight mt-5 mb-5 text-white">Без мелкого<br>шрифта.</h2>
+                        <p class="text-gray-300 leading-relaxed max-w-md">
+                            Собрал здесь вопросы, которые логично закрыть до первого
+                            разговора. Цены и комплектации лучше считать под конкретный проект.
+                        </p>
+                    </div>
+                    <div>
+                        <details open>
+                            <summary>Сколько времени занимает строительство?</summary>
+                            <p>В исходных материалах указан ориентир 20–35 дней на сборку. Финальный срок зависит от проекта, комплектации и готовности участка.</p>
+                        </details>
+                        <details>
+                            <summary>Можно ли изменить планировку?</summary>
+                            <p>Да. В концепции сайта акцент сделан на подбор решения под участок, бюджет и сценарий жизни, а не на один фиксированный шаблон.</p>
+                        </details>
+                        <details>
+                            <summary>Что входит в «под ключ»?</summary>
+                            <p>Это нужно расписать по вашей реальной комплектации. Сейчас на сайте лучше не обещать конкретный набор работ, пока вы его не подтвердите.</p>
+                        </details>
+                        <details>
+                            <summary>Работаете только в Набережных Челнах?</summary>
+                            <p>В исходном сайте указаны Набережные Челны и Республика Татарстан. Географию выезда можно расширить после уточнения ваших реальных зон работы.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section pb-12 md:pb-24 pt-12">
+            <div class="container">
+                <div class="cta glass-dark w-full max-w-full overflow-hidden rounded-[26px] p-6 sm:p-8 md:p-14" style="background: rgba(17,20,17,.68); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.16);">
+                    <div class="cta-content">
+                        <div class="eyebrow" style="color: white;">Следующий шаг</div>
+                        <h2>Давайте посчитаем ваш дом.</h2>
+                        <p>
+                            Расскажите, какой дом хотите построить, какая площадь нужна
+                            и где находится участок. Начнём с расчёта, а не с бесконечных
+                            «оставьте заявку».
+                        </p>
+                        <form id="calc-form" class="mt-8 flex flex-col gap-4 w-full sm:max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+                            <div>
+                                <input type="text" placeholder="Ваше имя" required class="w-full bg-black/40 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-white/50 transition-colors">
+                            </div>
+                            <div>
+                                <input type="tel" id="phone-input" placeholder="+7 (999) 999-99-99" required class="w-full bg-black/40 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-white/50 transition-colors">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full mt-2" aria-label="Связаться для расчёта стоимости">Получить расчёт →</button>
+                            <p class="text-[11px] text-gray-500 text-center mt-2">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</p>
+                        </form>
+                        
+                        <script src="https://unpkg.com/imask"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const phoneInput = document.getElementById('phone-input');
+                                IMask(phoneInput, {
+                                    mask: '+{7} (000) 000-00-00'
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-10 pb-8">
+                    <div>
+                        <div class="footer-logo">Подключ<span>.рф</span></div>
+                        <p class="footer-muted max-w-sm mt-4 text-gray-400">
+                            Современные каркасные дома под ключ в Набережных Челнах
+                            и Республике Татарстан.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="footer-title">Связь</div>
+                        <a class="footer-link" href="tel:+70000000000">+7 (000) 000-00-00</a>
+                        <p class="footer-muted mt-3 text-gray-400">Телефон в макете — замените на реальный.</p>
+                    </div>
+                    <div>
+                        <div class="footer-title">Адрес</div>
+                        <div class="footer-link">Набережные Челны</div>
+                        <p class="footer-muted mt-3 text-gray-400">Точный адрес/офис добавьте после подтверждения.</p>
+                    </div>
+                </div>
+                <div class="footer-bottom flex flex-col md:flex-row justify-between gap-4 pt-6 border-t border-white/10 text-gray-500 text-xs pb-24">
+                    <span>© 2026 Подключ.рф</span>
+                    <span>Информация о сроках, гарантии и количестве объектов требует актуализации перед публикацией.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+        <a href="https://wa.me/70000000000" target="_blank" class="floating-wa" aria-label="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.388 0 12.033c0 2.648.69 5.226 1.996 7.5L.435 24l4.57-1.198c2.19.1 4.39.2 6.5.2 6.646 0 12.031-5.388 12.031-12.033S18.677 0 12.031 0zm.019 20.016c-2.235 0-4.42-.596-6.34-1.725l-.454-.268-3.393.89.907-3.311-.295-.47c-1.24-1.97-1.896-4.247-1.896-6.599 0-5.717 4.654-10.373 10.375-10.373 5.72 0 10.373 4.656 10.373 10.373 0 5.717-4.653 10.373-10.373 10.373zM17.72 14.1c-.313-.157-1.848-.912-2.135-1.018-.286-.105-.494-.157-.702.157-.209.313-.805 1.018-.987 1.227-.183.209-.365.234-.678.077-.313-.157-1.32-.487-2.513-1.55-1.192-1.062-1.996-2.375-2.231-2.793-.235-.418-.026-.645.131-.801.14-.14.313-.365.469-.548.156-.183.209-.313.313-.523.104-.209.052-.392-.026-.548-.078-.156-.702-1.696-.963-2.322-.253-.611-.51-.527-.702-.537-.182-.009-.39-.011-.598-.011-.208 0-.547.078-.834.392-.286.313-1.093 1.071-1.093 2.613 0 1.542 1.12 3.033 1.276 3.242.156.209 2.213 3.376 5.358 4.735 3.145 1.359 3.145.904 3.718.852.573-.052 1.848-.755 2.109-1.485.26-.73.26-1.356.182-1.486-.078-.13-.286-.209-.599-.366z"/></svg>
+    </a>
+    <a href="#contact" class="floating-contact">Рассчитать дом →</a>
+
+    <script>
+        // Регистрируем плагин ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        const canvas = document.getElementById("hero-lightpass");
+        const context = canvas.getContext("2d");
+
+        // Установка размеров canvas по размеру окна
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
+        }
+        window.addEventListener("resize", resizeCanvas);
+
+        // ==== НАСТРОЙКИ КАДРОВ ====
+        const folder = './frame';
+        
+        // Точный список существующих кадров (от frame_0008.png до frame_0049.png)
+        const frameFiles = [
+            'frame_0008.png',
+            'frame_0015.png', 'frame_0016.png', 'frame_0017.png', 'frame_0018.png', 'frame_0019.png',
+            'frame_0020.png', 'frame_0021.png', 'frame_0022.png', 'frame_0023.png', 'frame_0024.png',
+            'frame_0025.png', 'frame_0026.png', 'frame_0027.png', 'frame_0028.png', 'frame_0029.png',
+            'frame_0030.png', 'frame_0031.png', 'frame_0032.png', 'frame_0033.png', 'frame_0034.png',
+            'frame_0035.png', 'frame_0036.png', 'frame_0037.png', 'frame_0038.png', 'frame_0039.png',
+            'frame_0040.png', 'frame_0041.png', 'frame_0042.png', 'frame_0043.png', 'frame_0044.png',
+            'frame_0045.png', 'frame_0046.png', 'frame_0047.png', 'frame_0048.png', 'frame_0049.png'
+        ];
+        const frameCount = frameFiles.length; 
+        
+        // Функция для получения пути к кадру
+        const currentFrame = index => `${folder}/${frameFiles[index]}`;
+
+        const images = [];
+        const frames = {
+            frame: 0
+        };
+
+        // Предзагрузка первого изображения для немедленного показа
+        const img = new Image();
+        img.src = currentFrame(0);
+        images[0] = img;
+
+        if (img.complete) {
+            resizeCanvas(); // Если картинка уже загрузилась из кэша
+        } else {
+            img.onload = () => {
+                resizeCanvas(); // Устанавливаем размер и отрисовываем первый кадр
+            };
+        }
+
+        // Предзагрузка остальных изображений в фоновом режиме
+        for (let i = 1; i < frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        // ==== АНИМАЦИЯ CANVAS ПРИ СКРОЛЛЕ ====
+        gsap.to(frames, {
+            frame: frameCount - 1,
+            snap: "frame",
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#main-container",
+                start: "top top",
+                // Длина скролла для полной анимации. 
+                // end: "bottom bottom" означает, что анимация завершится, когда мы доскроллим до самого низа контейнера
+                end: "bottom bottom", 
+                scrub: 0.5 // scrub: 0.5 дает небольшое сглаживание и "докатывание" анимации
+            },
+            onUpdate: render // Вызываем функцию отрисовки на каждом тике скролла
+        });
+
+        // Функция отрисовки кадра с эффектом object-fit: cover
+        function render() {
+            if (!images[frames.frame] || !images[frames.frame].complete) return;
+            
+            const image = images[frames.frame];
+            
+            // Очищаем canvas перед новой отрисовкой
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Рассчитываем пропорции
+            const canvasRatio = canvas.width / canvas.height;
+            const imageRatio = image.width / image.height;
+            
+            let drawWidth = canvas.width;
+            let drawHeight = canvas.height;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            // Логика object-fit: cover
+            if (canvasRatio > imageRatio) {
+                // Экран шире картинки пропорционально
+                drawHeight = canvas.width / imageRatio;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                // Экран выше картинки пропорционально
+                drawWidth = canvas.height * imageRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+            }
+
+            // Отрисовываем картинку
+            context.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        // ==== АНИМАЦИИ ТЕКСТОВЫХ СЕКЦИЙ (UI) ====
+
+        // Секция 1: плавно исчезает при скролле вверх
+        gsap.to("#step1", {
+            opacity: 0,
+            y: -30,
+            scrollTrigger: {
+                trigger: "#step1",
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.5
+            }
+        });
+
+        // Секция 2: единая timeline — появляется снизу И плавно исчезает уходя вверх
+        // Используем одну ScrollTrigger на всю секцию step2, чтобы не было разрыва при обратном скролле
+        const tl2 = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#step2",
+                start: "top bottom",   // начинаем когда низ шага входит в экран снизу
+                end: "bottom top",     // заканчиваем когда верх шага выходит за верхний край
+                scrub: 1.5
+            }
+        });
+        // Шаг 2 появляется в первой половине прокрутки секции
+        tl2.fromTo("#step2 .hero-side",
+            { opacity: 0, y: 60 },
+            { opacity: 1, y: 0, ease: "power2.out", duration: 0.4 }
+        );
+        // Удерживается в видимом состоянии
+        tl2.to("#step2 .hero-side", { opacity: 1, y: 0, duration: 0.2 });
+        // Плавно исчезает уходя вверх
+        tl2.to("#step2 .hero-side", { opacity: 0, y: -40, ease: "power2.in", duration: 0.4 });
+
+        // Секция 3: та же логика
+        const tl3 = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#step3",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.5
+            }
+        });
+        tl3.fromTo("#step3 .hero-side",
+            { opacity: 0, y: 60 },
+            { opacity: 1, y: 0, ease: "power2.out", duration: 0.4 }
+        );
+        tl3.to("#step3 .hero-side", { opacity: 1, y: 0, duration: 0.2 });
+        tl3.to("#step3 .hero-side", { opacity: 0, y: -40, ease: "power2.in", duration: 0.4 });
+
+        // Секция 4 (Финал): плавно появляется
+        gsap.fromTo("#step4 .hero-panel", 
+            { opacity: 0, scale: 0.92, y: 50 },
+            { 
+                opacity: 1, 
+                scale: 1,
+                y: 0,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#step4 .hero-panel",
+                    start: "top 85%",
+                    end: "center center",
+                    scrub: 1.5
+                }
+            }
+        );
+    </script>
+</body>
+</html>
