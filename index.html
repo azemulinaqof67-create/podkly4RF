@@ -417,8 +417,32 @@
             color: white;
         }
         summary::-webkit-details-marker { display: none; }
-        summary::after { content: "+"; font-size: 24px; font-weight: 400; }
-        details[open] summary::after { content: "−"; }
+        .faq-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .faq-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: rgba(255,255,255,0.7);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
+            transform: rotate(0deg);
+        }
+        details[open] .faq-icon {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        details[open] .faq-icon svg {
+            transform: rotate(180deg);
+            stroke: var(--ink);
+        }
         details p { color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 720px; margin: 14px 0 0; }
 
         .cta {
@@ -454,6 +478,7 @@
         .cta p { color: rgba(255,255,255,.66); max-width: 600px; line-height: 1.6; }
 
         footer { background: rgba(17,20,17,.68); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: white; border-top: 1px solid rgba(255,255,255,0.1); }
+        footer .container { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
         .footer-grid {
             display: grid;
             grid-template-columns: 1.4fr .8fr .8fr;
@@ -782,19 +807,19 @@
                     </div>
                     <div>
                         <details open>
-                            <summary>Сколько времени занимает строительство?</summary>
+                            <summary>Сколько времени занимает строительство?<span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
                             <p>В исходных материалах указан ориентир 20–35 дней на сборку. Финальный срок зависит от проекта, комплектации и готовности участка.</p>
                         </details>
                         <details>
-                            <summary>Можно ли изменить планировку?</summary>
+                            <summary>Можно ли изменить планировку?<span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
                             <p>Да. В концепции сайта акцент сделан на подбор решения под участок, бюджет и сценарий жизни, а не на один фиксированный шаблон.</p>
                         </details>
                         <details>
-                            <summary>Что входит в «под ключ»?</summary>
+                            <summary>Что входит в «под ключ»?<span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
                             <p>Это нужно расписать по вашей реальной комплектации. Сейчас на сайте лучше не обещать конкретный набор работ, пока вы его не подтвердите.</p>
                         </details>
                         <details>
-                            <summary>Работаете только в Набережных Челнах?</summary>
+                            <summary>Работаете только в Набережных Челнах?<span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
                             <p>В исходном сайте указаны Набережные Челны и Республика Татарстан. Географию выезда можно расширить после уточнения ваших реальных зон работы.</p>
                         </details>
                     </div>
